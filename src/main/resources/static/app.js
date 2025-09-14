@@ -130,7 +130,7 @@ async function renderReservationsView() {
     const reservationList = document.getElementById('reservation-list');
 
     try {
-        const response = await fetch(`${API_BASE_URL}/reservation/my-reservations/${currentUser}`);
+        const response = await fetch(`${API_BASE_URL}/reservation/my-reservation/${currentUser}`);
         if (!response.ok) throw new Error('Failed to load reservations.');
         const reservations = await response.json();
         
@@ -256,16 +256,37 @@ async function handleBook(trainNumber, classType, fromPlace, toPlace, journeyDat
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(reservation)
         });
-        const newReservation = await response.json();
-        showMessage(`Reservation successful! Your PNR is: ${newReservation.pnr}`);
+
+        // First, check if the response was successful (status code 200-299)
+        if (!response.ok) {
+            // If it's a non-successful response, parse the error message if available
+            // Note: The backend's error messages are likely JSON, so this is safe.
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to book reservation');
+        }
+
+        // Since we are not changing the backend, we read the response as plain text
+        const successMessage = await response.text();
+
+        // Use a regular expression to find the PNR number in the text
+        const pnrMatch = successMessage.match(/PNR is: (\d+)/);
+        let pnr = 'N/A'; 
+        if (pnrMatch && pnrMatch[1]) {
+            pnr = pnrMatch[1];
+        }
+        
+        // Use the extracted PNR in the success message
+        showMessage(`Reservation successful! Your PNR is: ${pnr}`);
+
         renderReservationsView();
     } catch (error) {
-        showMessage('Failed to book reservation. Please try again.');
+        // The error message from the throw will be available here
+        showMessage('Failed to book reservation. ' + error.message);
     }
 }
 
 async function handleCancel(pnr) {
-    // This is where you'd use your custom confirmation UI.
+
     // For now, let's keep it simple.
     if (!confirm(`Are you sure you want to cancel reservation with PNR ${pnr}?`)) {
         return;

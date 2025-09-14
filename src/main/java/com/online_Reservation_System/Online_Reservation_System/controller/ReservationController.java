@@ -4,6 +4,7 @@ import com.online_Reservation_System.Online_Reservation_System.repository.TrainR
 import com.online_Reservation_System.Online_Reservation_System.repository.UserRepository;
 import com.online_Reservation_System.Online_Reservation_System.repository.ReservationRepository;
 import com.online_Reservation_System.Online_Reservation_System.dto.ReservationRequest;
+import com.online_Reservation_System.Online_Reservation_System.dto.ReservationResponse;
 import com.online_Reservation_System.Online_Reservation_System.model.Reservation;
 import com.online_Reservation_System.Online_Reservation_System.model.Trains;
 import com.online_Reservation_System.Online_Reservation_System.model.User;
@@ -42,6 +43,10 @@ public class ReservationController {
    @PostMapping("/book")
     public ResponseEntity<?> createReservation(@RequestBody ReservationRequest reservationRequest) {
         // Fetch user and train from the database
+            System.out.println("Incoming request: " + reservationRequest);
+
+            System.out.println();
+            
         User user = userRepository.findByUsername(reservationRequest.getUsername());
         Trains train = trainRepository.findById(reservationRequest.getTrainNumber()).orElse(null);
 
@@ -90,10 +95,23 @@ public class ReservationController {
         return reservationRepository.findAll();
     }
 
-    @GetMapping("/my-reservations/{username}")
-    public List<Reservation> getUserReservations(@PathVariable String username) {
-        return reservationRepository.findByUserUsername(username);
-    }
+@GetMapping("/my-reservation/{username}")
+public List<ReservationResponse> getUserReservations(@PathVariable String username) {
+    List<Reservation> reservations = reservationRepository.findByUserUsername(username);
+
+    return reservations.stream().map(res -> {
+        ReservationResponse dto = new ReservationResponse();
+        dto.setPnr(res.getPnr());
+        dto.setFromPlace(res.getFromPlace());
+        dto.setToPlace(res.getToPlace());
+        dto.setJourneyDate(res.getJourneyDate());
+        dto.setTrainNumber(res.getTrain().getTrainNumber());
+        dto.setTrainName(res.getTrain().getTrainName());
+        dto.setClassType(res.getClassType());
+        return dto;
+    }).toList();
+}
+
 
     // Helper function to generate a random PNR
     private String generatePNR() {
