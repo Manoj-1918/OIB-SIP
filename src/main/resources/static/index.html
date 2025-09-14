@@ -1,0 +1,48 @@
+Gemini
+
+2.5 Flash
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Train Reservation</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <h1 class="header__title"><i class="fas fa-train"></i> Train Reservation</h1>
+        <nav class="header__nav">
+            <a href="#" id="nav-login" class="nav-link">Login</a>
+            <a href="#" id="nav-register" class="nav-link">Register</a>
+            <a href="#" id="nav-search" class="nav-link hidden">Search Trains</a>
+            <a href="#" id="nav-reservations" class="nav-link hidden">My Reservations</a>
+            <a href="#" id="nav-logout" class="nav-link hidden">Logout</a>
+        </nav>
+    </header>
+
+    <main class="main-container">
+        <div id="content" class="content-card">
+            <!-- Content will be dynamically inserted here -->
+            <div class="welcome-message">
+                <h2>Welcome!</h2>
+                <p>Please log in or register to book your next trip.</p>
+            </div>
+        </div>
+    </main>
+
+    <div id="message-box" class="message-box hidden">
+        <div class="message-box-content">
+            <p id="message-text"></p>
+            <button id="message-close-btn" class="btn">OK</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
+index.html
+Displaying index.html.
