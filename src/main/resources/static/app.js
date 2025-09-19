@@ -266,17 +266,14 @@ async function handleBook(trainNumber, classType, fromPlace, toPlace, journeyDat
         }
 
         // Since we are not changing the backend, we read the response as plain text
-        const successMessage = await response.text();
+// Since backend sends plain text like "Reservation successful! Your PNR is: KITNCUPD"
+const successMessage = await response.text();
 
-        // Use a regular expression to find the PNR number in the text
-        const pnrMatch = successMessage.match(/PNR is: (\d+)/);
-        let pnr = 'N/A'; 
-        if (pnrMatch && pnrMatch[1]) {
-            pnr = pnrMatch[1];
-        }
-        
-        // Use the extracted PNR in the success message
-        showMessage(`Reservation successful! Your PNR is: ${pnr}`);
+const pnrMatch = successMessage.match(/PNR is:\s*([A-Z0-9]+)/i);
+let pnr = pnrMatch ? pnrMatch[1] : 'N/A';
+
+showMessage(`Reservation successful! Your PNR is: ${pnr}`);
+
 
         renderReservationsView();
     } catch (error) {
