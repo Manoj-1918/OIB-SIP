@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATM Service Client</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+    <div class="atm-container">
+        <header>
+            <i class="fas fa-hand-holding-usd"></i>
+            <h1>ATM Banking Service</h1>
+        </header>
+
+        <div id="auth-section" class="card active">
+            <h2><i class="fas fa-lock"></i> Log In</h2>
+            <div class="input-group">
+                <input type="text" id="login-username" placeholder="Username (e.g., testuser)">
+                <input type="password" id="login-pin" placeholder="PIN">
+            </div>
+            <button onclick="login()" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i> Login</button>
+            <div id="auth-output" class="output"></div>
+        </div>
+
+        <div id="app-content" class="card">
+            <div class="user-info">
+                <p>Welcome, <strong id="current-user"></strong>!</p>
+                <button onclick="logout()" class="btn btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+            
+            <div class="balance-display">
+                <h3>Current Balance</h3>
+                <h1 id="current-balance">₹0.00</h1>
+            </div>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="showPanel('deposit-panel', this)"><i class="fas fa-money-check-alt"></i> Deposit</button>
+                <button class="tab-button" onclick="showPanel('withdraw-panel', this)"><i class="fas fa-money-bill-wave"></i> Withdraw</button>
+                <button class="tab-button" onclick="showPanel('transfer-panel', this)"><i class="fas fa-exchange-alt"></i> Transfer</button>
+                <button class="tab-button" onclick="showPanel('history-panel', this); getHistory()"><i class="fas fa-history"></i> History</button>
+            </div>
+
+            <div id="deposit-panel" class="panel active">
+                <div class="input-group">
+                    <input type="number" id="deposit-amount" placeholder="Amount to deposit" value="50.00">
+                </div>
+                <button onclick="deposit()" class="btn btn-success"><i class="fas fa-plus-circle"></i> Deposit Funds</button>
+                <div id="deposit-output" class="output"></div>
+            </div>
+
+            <div id="withdraw-panel" class="panel">
+                <div class="input-group">
+                    <input type="number" id="withdraw-amount" placeholder="Amount to withdraw" value="20.00">
+                </div>
+                <button onclick="withdraw()" class="btn btn-danger"><i class="fas fa-minus-circle"></i> Withdraw Funds</button>
+                <div id="withdraw-output" class="output"></div>
+            </div>
+
+            <div id="transfer-panel" class="panel">
+                <div class="input-group">
+                    <input type="text" id="transfer-recipient" placeholder="Recipient Username">
+                    <input type="number" id="transfer-amount" placeholder="Amount" value="10.00">
+                </div>
+                <button onclick="transfer()" class="btn btn-warning"><i class="fas fa-share-square"></i> Complete Transfer</button>
+                <div id="transfer-output" class="output"></div>
+            </div>
+
+            <div id="history-panel" class="panel">
+                <table id="history-table">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Counterparty</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-body">
+                        <tr><td colspan="4">Click 'History' to load transactions.</td></tr>
+                    </tbody>
+                </table>
+                <div id="history-output" class="output"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
